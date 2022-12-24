@@ -4,11 +4,16 @@
     "version": "1.0",
     "manifest_version": 3,
 
-    "permissions": ["storage"],
+    "permissions": ["storage", "scripting"],
+    "host_permissions" : ["https://github.com/"],
+    "web_accessible_resources": [{
+      "resources": ["page/preview.html"],
+      "matches": ["<all_urls>"]
+    }], 
 
     "action": {
       "default_popup": "popup/popup.html"
-  },
+    },
     
     "background": {
        "service_worker": "background.js"
@@ -19,5 +24,5 @@
           "matches": ["<all_urls>"],
           "js": ["content.js"]   
       }
-   ]
+    ]
  }
