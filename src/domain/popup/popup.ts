@@ -4,7 +4,7 @@ let getInput = (): HTMLInputElement => {
     return (<HTMLInputElement>document.getElementById("token-input"))!;
 }
 
-getToken((token: string) => {
+getToken((token) => {
     getInput().value = token;
 }, () => {
     getInput().value = "";
