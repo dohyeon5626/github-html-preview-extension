@@ -11,7 +11,7 @@ export let getContent = (githubUrl: string, success: (response: any) => void, fa
 export let getContentWithToken = (githubUrl: string, token: string, success: (response: any) => void, fail: (error: any) => void) => {
     let url = githubUrl.replace("github.com", "raw.githubusercontent.com")
         .replace("/blob", "");
-    axios.get(`https://cors-anywhere.herokuapp.com/${url}`, {
+    axios.get(url, {
         headers: {
             Authorization: `token ${token}`
         }
