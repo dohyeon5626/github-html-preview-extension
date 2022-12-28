@@ -10,6 +10,12 @@ export let addPreviewButton = () => {
     }
 }
 
+export let deletePreviewButton = () => {
+    if (document.getElementById("html-preview") != null) {
+        document.getElementById("html-preview")!.outerHTML = "";
+    }
+}
+
 export let replacePage = (html: string) => {
     document.getElementsByTagName("html")[0].innerHTML = html;
 }

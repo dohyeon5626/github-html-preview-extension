@@ -5,7 +5,7 @@
     "manifest_version": 3,
 
     "permissions": ["storage", "scripting"],
-    "host_permissions" : ["https://raw.githubusercontent.com/*"],
+    "host_permissions" : ["https://github.com/*", "https://raw.githubusercontent.com/*"],
     "web_accessible_resources": [{
       "resources": ["page/preview.html"],
       "matches": ["<all_urls>"]
