@@ -19,3 +19,7 @@ export let deletePreviewButton = () => {
 export let replacePage = (html: string) => {
     document.getElementsByTagName("html")[0].innerHTML = html;
 }
+
+export let replaceStyleTag = (tag: HTMLLinkElement, css: string) => {
+    tag.outerHTML = `<style>${css}</style>`;
+}
