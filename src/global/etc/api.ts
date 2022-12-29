@@ -20,3 +20,15 @@ export let getContentWithToken = (githubUrl: string, token: string, success: (re
             getContent(githubUrl, success, fail);
         });
 }
+
+export let getBlobContentWithToken = (githubUrl: string, token: string, success: (response: any) => void, fail: (error: any) => void) => {
+    let url = githubUrl.replace("github.com", "raw.githubusercontent.com")
+        .replace("/blob", "");
+    axios.get(url, {
+        headers: {
+            Authorization: `token ${token}`
+        },
+        responseType: 'blob'
+    }).then(success)
+        .catch(fail);
+}
