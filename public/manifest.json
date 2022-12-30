@@ -1,5 +1,5 @@
 {
-    "name": "Github Html Preview Extension",
+    "name": "Github Html Preview",
     "description": "Take a look at the HTML on the GitHub Repository.",
     "version": "1.0",
     "manifest_version": 3,
