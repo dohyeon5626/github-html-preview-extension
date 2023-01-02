@@ -22,144 +22,112 @@ export let replacePage = (html: string) => {
     document.getElementsByTagName("html")[0].innerHTML = html;
 }
 
-let replaceStyleTag = (tag: HTMLLinkElement, css: string) => {
-    tag.outerHTML = `<style>${css}</style>`;
+let getFileUrl = (githubUrl: string, path: string) => {
+    let urlInfo = githubUrl.split("/");
+    if (path.startsWith("/")) {
+        urlInfo[7] = path;
+    } else {
+        urlInfo[urlInfo.length-1] = path;
+    }
+    return urlInfo.join("/");
 }
 
-export let setCss = (url: string) => {
-    let urlInfo = url.split("/");
+let isPublicUrl = (path: string) => {
+    return path.startsWith("http://") || path.startsWith("https://");
+}
+
+let replaceStyleTag = (url: string, getStyle: (cssUrl: string, callback: (response: any) => void) => void) => {
     let linkTags = document.getElementsByTagName("link");
     for (let i=0; i<linkTags.length; i++) {
         let tag = (<HTMLLinkElement>linkTags[i]);
         if (tag.rel === "stylesheet") {
             let href = tag.getAttribute("href")!;
-            if (!href.startsWith("http://") && !href.startsWith("https://")) {
-                if (href.startsWith("/")) {
-                    urlInfo[7] = href;
-                } else {
-                    urlInfo[urlInfo.length-1] = href;
-                }
-
-                let cssUrl = urlInfo.join("/");
-                getContent(cssUrl, (response) => {
-                    replaceStyleTag(tag, response.data);
-                }, (error) => {});
+            if (!isPublicUrl(href)) {
+                let cssUrl = getFileUrl(url, href);
+                getStyle(cssUrl, (response) => {
+                    tag.outerHTML = `<style>${response.data}</style>`;
+                });
             }
         }
     }
 }
 
-export let setCssWithToken = (url: string, token: string) => {
-    let urlInfo = url.split("/");
-    let linkTags = document.getElementsByTagName("link");
-    for (let i=0; i<linkTags.length; i++) {
-        let tag = (<HTMLLinkElement>linkTags[i]);
-        if (tag.rel === "stylesheet") {
-            let href = tag.getAttribute("href")!;
-            if (!href.startsWith("http://") && !href.startsWith("https://")) {
-                if (href.startsWith("/")) {
-                    urlInfo[7] = href;
-                } else {
-                    urlInfo[urlInfo.length-1] = href;
-                }
-
-                let cssUrl = urlInfo.join("/");
-                getContentWithToken(cssUrl, token, (response) => {
-                    replaceStyleTag(tag, response.data);
-                }, (error) => {});
-            }
-        }
-    }
-}
-
-export let setImg = (url: string) => {
-    let urlInfo = url.split("/");
+let replaceImageTag = (url: string, getBlobContent: (imgUrl: string, callback: (response: any) => void) => void) => {
     let linkTags = document.getElementsByTagName("img");
     for (let i=0; i<linkTags.length; i++) {
         let tag = (<HTMLImageElement>linkTags[i]);
         let src = tag.getAttribute("src")!;
-        if (!src.startsWith("http://") && !src.startsWith("https://")) {
-            if (src.startsWith("/")) {
-                urlInfo[7] = src;
-            } else {
-                urlInfo[urlInfo.length-1] = src;
-            }
-            
-            let imgUrl = urlInfo.join("/");
+        if (!isPublicUrl(src)) {
+            let imgUrl = getFileUrl(url, src);
             getBlobContent(imgUrl, (response) => {
                 let objectUrl = URL.createObjectURL(response.data);
                 tag.src = objectUrl;
-            }, (error) => {});
+            });
         }
     }
 }
 
-export let setImgWithToken = (url: string, token: string) => {
-    let urlInfo = url.split("/");
-    let linkTags = document.getElementsByTagName("img");
-    for (let i=0; i<linkTags.length; i++) {
-        let tag = (<HTMLImageElement>linkTags[i]);
-        let src = tag.getAttribute("src")!;
-        if (!src.startsWith("http://") && !src.startsWith("https://")) {
-            if (src.startsWith("/")) {
-                urlInfo[7] = src;
-            } else {
-                urlInfo[urlInfo.length-1] = src;
-            }
-            
-            let imgUrl = urlInfo.join("/");
-            getBlobContentWithToken(imgUrl, token, (response) => {
-                let objectUrl = URL.createObjectURL(response.data);
-                tag.src = objectUrl;
-            }, (error) => {});
-        }
-    }
-}
-
-export let setFavicon = (url: string) => {
-    let urlInfo = url.split("/");
+let replaceFaviconTag = (url: string, getBlobContent: (imgUrl: string, callback: (response: any) => void) => void) => {
     let linkTags = document.getElementsByTagName("link");
     for (let i=0; i<linkTags.length; i++) {
         let tag = (<HTMLLinkElement>linkTags[i]);
         if (tag.rel === "icon") {
             let href = tag.getAttribute("href")!;
-            if (!href.startsWith("http://") && !href.startsWith("https://")) {
-                if (href.startsWith("/")) {
-                    urlInfo[7] = href;
-                } else {
-                    urlInfo[urlInfo.length-1] = href;
-                }
-
-                let imgUrl = urlInfo.join("/");
+            if (!isPublicUrl(href)) {
+                let imgUrl = getFileUrl(url, href);
                 getBlobContent(imgUrl, (response) => {
                     let objectUrl = URL.createObjectURL(response.data);
                     tag.href = objectUrl;
-                }, (error) => {});
+                });
             }
         }
     }
 }
 
-export let setFaviconWithToken = (url: string, token: string) => {
-    let urlInfo = url.split("/");
-    let linkTags = document.getElementsByTagName("link");
-    for (let i=0; i<linkTags.length; i++) {
-        let tag = (<HTMLLinkElement>linkTags[i]);
-        if (tag.rel === "icon") {
-            let href = tag.getAttribute("href")!;
-            if (!href.startsWith("http://") && !href.startsWith("https://")) {
-                if (href.startsWith("/")) {
-                    urlInfo[7] = href;
-                } else {
-                    urlInfo[urlInfo.length-1] = href;
-                }
+export let setCss = (url: string) => {
+    replaceStyleTag(url, (cssUrl, callback) => {
+        getContent(cssUrl, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
 
-                let imgUrl = urlInfo.join("/");
-                getBlobContentWithToken(imgUrl, token, (response) => {
-                    let objectUrl = URL.createObjectURL(response.data);
-                    tag.href = objectUrl;
-                }, (error) => {});
-            }
-        }
-    }
+export let setCssWithToken = (url: string, token: string) => {
+    replaceStyleTag(url, (cssUrl, callback) => {
+        getContentWithToken(cssUrl, token, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
+
+export let setImg = (url: string) => {
+    replaceImageTag(url, (imgUrl, callback) => {
+        getBlobContent(imgUrl, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
+
+export let setImgWithToken = (url: string, token: string) => {
+    replaceImageTag(url, (imgUrl, callback) => {
+        getBlobContentWithToken(imgUrl, token, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
+
+export let setFavicon = (url: string) => {
+    replaceFaviconTag(url, (imgUrl, callback) => {
+        getBlobContent(imgUrl, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
+
+export let setFaviconWithToken = (url: string, token: string) => {
+    replaceFaviconTag(url, (imgUrl, callback) => {
+        getBlobContentWithToken(imgUrl, token, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
 }
