@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios';
 
 export let getContent = (githubUrl: string, success: (response: any) => void, fail: (error: any) => void) => {
     let url = githubUrl.replace("github.com", "raw.githubusercontent.com")
@@ -21,6 +21,15 @@ export let getContentWithToken = (githubUrl: string, token: string, success: (re
         });
 }
 
+export let getBlobContent = (githubUrl: string, success: (response: any) => void, fail: (error: any) => void) => {
+    let url = githubUrl.replace("github.com", "raw.githubusercontent.com")
+        .replace("/blob", "");
+    axios.get(url, {
+        responseType: 'blob'
+    }).then(success)
+        .catch(fail);
+}
+
 export let getBlobContentWithToken = (githubUrl: string, token: string, success: (response: any) => void, fail: (error: any) => void) => {
     let url = githubUrl.replace("github.com", "raw.githubusercontent.com")
         .replace("/blob", "");
@@ -30,5 +39,7 @@ export let getBlobContentWithToken = (githubUrl: string, token: string, success:
         },
         responseType: 'blob'
     }).then(success)
-        .catch(fail);
+        .catch((error) => {
+            getBlobContent(githubUrl, success, fail);
+        });
 }
