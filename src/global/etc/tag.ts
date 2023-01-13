@@ -2,7 +2,7 @@ import { getBlobContent, getBlobContentWithToken, getContent, getContentWithToke
 
 export let addPreviewButton = () => {
     if (document.getElementById("html-preview") === null) {
-        let btnGroup = (document.getElementsByClassName("BtnGroup"))[3];
+        let btnGroup = document.querySelector(".d-flex.py-1.py-md-0.flex-auto.flex-order-1.flex-md-order-2.flex-sm-grow-0.flex-justify-between.hide-sm.hide-md > .BtnGroup")!;
         let url = chrome.runtime.getURL("page/preview.html") + `?url=${encodeURI(location.href)}`;
         btnGroup.innerHTML += `
         <a href="${url}" id="html-preview" data-view-component="true" class="btn-sm btn BtnGroup-item" target="_blank">
