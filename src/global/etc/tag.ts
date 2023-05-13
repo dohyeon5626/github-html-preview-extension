@@ -2,13 +2,17 @@ import { getBlobContent, getBlobContentWithToken, getContent, getContentWithToke
 
 export let addPreviewButton = () => {
     if (document.getElementById("html-preview") === null) {
-        let btnGroup = document.querySelector(".d-flex.py-1.py-md-0.flex-auto.flex-order-1.flex-md-order-2.flex-sm-grow-0.flex-justify-between.hide-sm.hide-md > .BtnGroup")!;
-        let url = chrome.runtime.getURL("page/preview.html") + `?url=${encodeURI(location.href)}`;
-        btnGroup.innerHTML += `
-        <a href="${url}" id="html-preview" data-view-component="true" class="Button--secondary Button--small Button" target="_blank">
-        Preview
-        </a>
-        `;
+        let btnGroup = document.querySelector(".Box-sc-g0xbh4-0 .kSGBPx")!;
+        for (let aTag of btnGroup.querySelectorAll("div > a")) {
+            if (aTag.getAttribute("data-testid") === "raw-button") {
+                btnGroup.innerHTML += `
+                <a href="${chrome.runtime.getURL("page/preview.html") + `?url=${encodeURI(location.href)}`}" id="html-preview" data-size="small"
+                class="${aTag.getAttribute("class")}">
+                Preview
+                </a>
+                `;
+            }
+        }
     }
 }
 
