@@ -1,7 +1,7 @@
 {
     "name": "Github Html Preview",
     "description": "Take a look at the HTML on the GitHub Repository.",
-    "version": "1.2",
+    "version": "2.0",
     "manifest_version": 3,
 
     "permissions": ["storage", "scripting"],
