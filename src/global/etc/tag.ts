@@ -6,13 +6,16 @@ export let addPreviewButton = () => {
         for (let aTag of btnGroup.querySelectorAll("div > a")) {
             if (aTag.getAttribute("data-testid") === "raw-button") {
                 btnGroup.innerHTML += `
-                <a href="${chrome.runtime.getURL("page/preview.html") + `?url=${encodeURI(location.href)}`}" id="html-preview" data-size="small"
+                <button id="html-preview" data-size="small"
                 class="${aTag.getAttribute("class")}">
                 Preview
-                </a>
+                </button>
                 `;
             }
         }
+        document.getElementById("html-preview")!.onclick = () => {
+            window.open(`${chrome.runtime.getURL("page/preview.html")}?url=${encodeURI(location.href)}`);
+        };
     }
 }
 
@@ -50,6 +53,22 @@ let replaceStyleTag = (url: string, getStyle: (cssUrl: string, callback: (respon
                 let cssUrl = getFileUrl(url, href);
                 getStyle(cssUrl, (response) => {
                     tag.outerHTML = `<style>${response.data}</style>`;
+                });
+            }
+        }
+    }
+}
+
+let replaceScriptTag = (url: string, getScript: (cssUrl: string, callback: (response: any) => void) => void) => {
+    let scriptTags = document.getElementsByTagName("script");
+    for (let i=0; i<scriptTags.length; i++) {
+        let tag = (<HTMLScriptElement>scriptTags[i]);
+        if (tag.getAttribute('src') != null)  {
+            let src = tag.getAttribute('src')!!;
+            if (!isPublicUrl(src)) {
+                let jsUrl = getFileUrl(url, src);
+                getScript(jsUrl, (response) => {
+                    tag.outerHTML = `<script>${response.data}</script>`;
                 });
             }
         }
@@ -99,6 +118,22 @@ export let setCss = (url: string) => {
 export let setCssWithToken = (url: string, token: string) => {
     replaceStyleTag(url, (cssUrl, callback) => {
         getContentWithToken(cssUrl, token, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
+
+export let setJs = (url: string) => {
+    replaceScriptTag(url, (JsUrl, callback) => {
+        getContent(JsUrl, (response) => {
+            callback(response);
+        }, (error) => {});
+    });
+}
+
+export let setJsWithToken = (url: string, token: string) => {
+    replaceScriptTag(url, (JsUrl, callback) => {
+        getContentWithToken(JsUrl, token, (response) => {
             callback(response);
         }, (error) => {});
     });
