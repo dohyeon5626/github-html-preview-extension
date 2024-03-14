@@ -1,7 +1,9 @@
 import { getBlobContent, getBlobContentWithToken, getContent, getContentWithToken } from './api';
 
 export let addPreviewButton = () => {
-    if (document.getElementById("html-preview") === null) {
+    let isPublic = document.querySelector("meta[name=octolytics-dimension-repository_public]")!.getAttribute("content") == "true";
+
+    if (isPublic && document.getElementById("html-preview") === null) {
         let btnGroup = document.querySelector(".Box-sc-g0xbh4-0 .kSGBPx")!;
         for (let aTag of btnGroup.querySelectorAll("div > a")) {
             if (aTag.getAttribute("data-testid") === "raw-button") {
