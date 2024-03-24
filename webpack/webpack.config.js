@@ -6,8 +6,7 @@ module.exports = {
    entry: {
       "background": ["./src/domain/background/background.ts"],
       "popup": ["./src/domain/popup/popup.ts"],
-      "html-page-content": ["./src/domain/content/html-page-content.ts"],
-      "preview-page": ["./src/domain/page/preview-page.ts"]
+      "html-page-content": ["./src/domain/content/html-page-content.ts"]
    },
    output: {
       path: path.join(__dirname, "../dist"),
