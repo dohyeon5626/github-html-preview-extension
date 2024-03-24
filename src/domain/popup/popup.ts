@@ -1,3 +1,4 @@
+import { executeScript } from "../../global/chrome/script";
 import { getToken, setToken } from "../../global/chrome/storage";
 
 let getInput = (): HTMLInputElement => {
@@ -11,8 +12,14 @@ getToken((token) => {
 });
 
 document.getElementById("token-button")!.onclick = () => {
-    let input = getInput();
-    setToken(input.value, () => {
+    setToken(getInput().value, () => {
+        chrome.tabs.query({}, (tabs) => {
+            tabs.filter(tab => tab.url?.startsWith("https://dohyeon5626.github.io/github-html-preview-page/")).forEach(tab => {
+                executeScript(tab.id!!, () => {
+                    window.close();
+                });
+            });
+        });
         window.close();
     });
 };
