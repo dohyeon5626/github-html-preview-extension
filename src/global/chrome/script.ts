@@ -4,3 +4,10 @@ export let executeScript = (tabId: number, func: () => void) => {
         func: func
     });
 }
+
+export let executeScriptFile = (tabId: number, file: string) => {
+    chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        files: [file]
+    });
+}
