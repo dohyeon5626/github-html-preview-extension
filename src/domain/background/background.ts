@@ -4,7 +4,7 @@ import { deletePreviewButton } from '../../global/etc/tag';
 
 addTabUpdatedListener(
     (url: string, tabId: number) => {
-        if (url.includes("https://github.com/") && url.endsWith(".html")) {
+        if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
             executeScriptFile(tabId, "html-page-content.js");
         } else {
             executeScript(tabId, deletePreviewButton);
