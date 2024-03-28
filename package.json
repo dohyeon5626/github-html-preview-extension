@@ -1,8 +1,6 @@
 {
   "name": "github-html-preview-extension",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "3.0",
   "scripts": {
     "build": "rm -rf ./dist && webpack --config webpack/webpack.config.js",
     "zip": "npm run build && zip -r ./dist.zip ./dist/*"
@@ -11,9 +9,8 @@
     "type": "git",
     "url": "git+https://github.com/dohyeon5626/github-html-preview-extension.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "dohyeon5626 <kodohyeon71@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/dohyeon5626/github-html-preview-extension/issues"
   },
