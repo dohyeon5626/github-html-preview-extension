@@ -1,7 +1,8 @@
 # github html preview extension
-This extension provides a preview of the html file uploaded to github. You can view rough results without having to copy locally.
+![GitHub License](https://img.shields.io/github/license/dohyeon5626/github-html-preview-extension?style=flat&color=green) ![GitHub Tag](https://img.shields.io/github/v/tag/dohyeon5626/github-html-preview-extension?style=flat&color=green`) ![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/pmpjligbgooljdpakhophgddmcipglna?style=flat&color=blue) ![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/pmpjligbgooljdpakhophgddmcipglna?style=flat&label=extension%20users&color=blue) ![YouTube Video Views](https://img.shields.io/youtube/views/1ILDesSpFls?style=flat&label=youtube%20views)
 
-## Download
-[Chrome Extension](https://chromewebstore.google.com/detail/github-html-preview/pmpjligbgooljdpakhophgddmcipglna?hl=ko&authuser=0)
-## Guide
-[![GUIDE](http://img.youtube.com/vi/1ILDesSpFls/0.jpg)](https://www.youtube.com/watch?v=1ILDesSpFls)
+This Chrome extension allows you to instantly preview HTML files on GitHub. With a single click, you can see the rendered HTML in a new tab, and it also supports private repositories when configured with your GitHub token.<br/><br/>
+**Installation** : [Chrome Web Store](https://chromewebstore.google.com/detail/github-html-preview/pmpjligbgooljdpakhophgddmcipglna)<br/>
+**Guide** : [Youtube](https://www.youtube.com/watch?v=1ILDesSpFls)
+
+> with https://github.com/dohyeon5626/github-html-preview-page
