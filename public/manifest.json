@@ -1,7 +1,7 @@
 {
     "name": "Github Html Preview",
-    "description": "Take a look at the HTML on the GitHub Repository.",
-    "version": "3.0",
+    "description": "Instantly preview HTML files on GitHub with our Chrome extension. One-click preview and easy access!",
+    "version": "3.1",
     "manifest_version": 3,
 
     "permissions": ["storage", "scripting"],
