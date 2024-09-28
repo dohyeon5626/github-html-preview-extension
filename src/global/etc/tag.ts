@@ -1,6 +1,9 @@
 export let addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
     if (document.getElementById("html-preview") === null) {
         let btnGroup = document.querySelector(".Box-sc-g0xbh4-0 .kcLCKF")!
+
+        if (!btnGroup) return;
+
         for (let aTag of btnGroup.querySelectorAll("div > a")) {
             if (aTag.getAttribute("data-testid") === "raw-button") {
                 btnGroup.innerHTML = `
