@@ -5,4 +5,4 @@ This Chrome extension allows you to instantly preview HTML files on GitHub. With
 **Installation** : [Chrome Web Store](https://chromewebstore.google.com/detail/github-html-preview/pmpjligbgooljdpakhophgddmcipglna)<br/>
 **Guide** : [Youtube](https://www.youtube.com/watch?v=1ILDesSpFls)
 
-> with https://github.com/dohyeon5626/github-html-preview-page
+> with [github-html-preview-page](https://github.com/dohyeon5626/github-html-preview-page)
