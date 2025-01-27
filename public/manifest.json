@@ -5,7 +5,7 @@
     "manifest_version": 3,
 
     "permissions": ["storage", "scripting"],
-    "host_permissions" : ["https://github.com/*", "https://raw.githubusercontent.com/*", "https://dohyeon5626.github.io/github-html-preview-page/*"],
+    "host_permissions" : ["https://github.com/*", "https://raw.githubusercontent.com/*", "https://github-html-preview.dohyeon5626.com/*"],
     "web_accessible_resources": [{
       "resources": ["page/preview.html"],
       "matches": ["<all_urls>"]
@@ -32,7 +32,7 @@
           "js": ["html-page-content.js"]
       },
       {
-        "matches": ["https://dohyeon5626.github.io/github-html-preview-page/*"],
+        "matches": ["https://github-html-preview.dohyeon5626.com/*"],
         "js": ["preview-page-content.js"]
       }
     ]

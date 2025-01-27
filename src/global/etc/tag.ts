@@ -18,9 +18,9 @@ export let addPreviewButton = (getToken: (success: (token: string) => void, fail
 
         document.getElementById("html-preview")!.onclick = () => {
             getToken((token) => {
-                window.open(`https://dohyeon5626.github.io/github-html-preview-page/?${location.href}&${token}`);
+                window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}&${token}`);
             }, () => {
-                window.open(`https://dohyeon5626.github.io/github-html-preview-page/?${location.href}`);
+                window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}`);
             });
         };
     }

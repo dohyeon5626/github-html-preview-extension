@@ -14,7 +14,7 @@ getToken((token) => {
 document.getElementById("token-button")!.onclick = () => {
     setToken(getInput().value, () => {
         chrome.tabs.query({}, (tabs) => {
-            tabs.filter(tab => tab.url?.startsWith("https://dohyeon5626.github.io/github-html-preview-page/")).forEach(tab => {
+            tabs.filter(tab => tab.url?.startsWith("https://github-html-preview.dohyeon5626.com/")).forEach(tab => {
                 executeScript(tab.id!!, () => {
                     window.close();
                 });
