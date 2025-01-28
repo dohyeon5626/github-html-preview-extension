@@ -9,7 +9,7 @@ export let addPreviewButton = (getToken: (success: (token: string) => void, fail
         for (let aTag of btnGroup.querySelectorAll("div > a")) {
             if (aTag.getAttribute("data-testid") === "raw-button") {
                 btnGroup.innerHTML = `
-                <button id="html-preview" data-size="small"
+                <button id="html-preview" data-size="small" data-variant="default"
                 class="${aTag.getAttribute("class")}">
                 Preview
                 </button>
