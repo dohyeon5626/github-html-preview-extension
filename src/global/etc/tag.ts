@@ -1,3 +1,5 @@
+import { getProxyToken } from "./api";
+
 export let addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
     if (document.getElementById("html-preview") === null) {
         let btnGroup = document.querySelector(".Box-sc-g0xbh4-0 .kcLCKF")!
@@ -16,9 +18,13 @@ export let addPreviewButton = (getToken: (success: (token: string) => void, fail
             }
         }
 
+        let urlData = location.href.replace("https://github.com/", "").split("/");
+        let user = urlData[0];
+        let repo = urlData[1];
+
         document.getElementById("html-preview")!.onclick = () => {
-            getToken((token) => {
-                window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}&${token}`);
+            getToken(async (token) => {
+                window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}&${await getProxyToken(user, repo, token)}&${new Date().getTime()}`);
             }, () => {
                 window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}`);
             });

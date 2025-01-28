@@ -6,10 +6,6 @@
 
     "permissions": ["storage", "scripting"],
     "host_permissions" : ["https://github.com/*", "https://raw.githubusercontent.com/*", "https://github-html-preview.dohyeon5626.com/*"],
-    "web_accessible_resources": [{
-      "resources": ["page/preview.html"],
-      "matches": ["<all_urls>"]
-    }],
 
     "icons": {
       "16": "icon/16.png",
