@@ -2,17 +2,18 @@ import { getProxyToken } from "./api";
 
 export let addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
     if (document.getElementById("html-preview") === null) {
-        let btnGroup = document.querySelector(".Box-sc-g0xbh4-0 .kcLCKF")!
+        let btnGroup = document.querySelectorAll(".Box-sc-g0xbh4-0 .prc-ButtonGroup-ButtonGroup-vcMeG")![1]
 
         if (!btnGroup) return;
+        console.log(btnGroup)
 
         for (let aTag of btnGroup.querySelectorAll("div > a")) {
             if (aTag.getAttribute("data-testid") === "raw-button") {
-                btnGroup.innerHTML = `
+                btnGroup.innerHTML = `<div>
                 <button id="html-preview" data-size="small" data-variant="default"
                 class="${aTag.getAttribute("class")}">
                 Preview
-                </button>
+                </button></div>
                 ${btnGroup.innerHTML}
                 `;
             }
