@@ -4,7 +4,7 @@
     "version": "3.5",
     "manifest_version": 3,
 
-    "permissions": ["storage", "scripting"],
+    "permissions": ["storage", "scripting", "contextMenus"],
     "host_permissions" : ["https://github.com/*", "https://raw.githubusercontent.com/*", "https://github-html-preview.dohyeon5626.com/*"],
 
     "icons": {
