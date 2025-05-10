@@ -31,5 +31,15 @@
         "matches": ["https://github-html-preview.dohyeon5626.com/*"],
         "js": ["preview-page-content.js"]
       }
-    ]
+    ],
+
+    "commands" : {
+        "preview": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+P",
+                "mac": "Command+Shift+P"
+            },
+            "description": "Preview Html"
+        }
+    }
  }
