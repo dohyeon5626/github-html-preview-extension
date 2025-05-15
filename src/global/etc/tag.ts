@@ -24,6 +24,7 @@ export let addPreviewButton = (getToken: (success: (token: string) => void, fail
                 window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}`);
             });
         };
+        document.querySelector("#preview-button-error-alert")?.remove()
     }
 }
 
@@ -47,7 +48,7 @@ export let checkPreviewButton = () => {
                 display: flex;
                 padding: 16px;
                 z-index: 9999;">
-                <button style="
+                <button id="close-button" style="
                     top: -10px;
                     position: absolute;
                     left: -10px;
@@ -68,37 +69,69 @@ export let checkPreviewButton = () => {
                     flex-shrink: 0;
                     margin-right: 12px;"></img>
                 <div style="flex: 1;">
-                    <div style="font-size: 12px; color: #333; margin-bottom: 4px;">Github Html Preview Extension</div>
+                    <div style="height: 20px; font-size: 12px; color: #333; margin-bottom: 4px; display: flex; justify-content: space-between;">
+                        Github Html Preview Extension
+                        <button id="forever-close-button" style="border-radius: 5px;
+                            padding: 2px 12px;
+                            border: 1px solid rgba(255,255,255,0.3);
+                            background: rgba(0,0,0,0.1);
+                            color: rgba(242,242,242,0.6);
+                            font-size: 12px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            line-height: 12px;
+                            display: none;">
+                            Don't show this again</button>
+                    </div>
                     <div style="font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #111;">Preview button temporarily unavailable</div>
                     <div style="font-size: 13px; color: #333;">Due to recent changes to GitHub's layout, the preview button is temporarily disabled.<br/>Use Ctrl + Shift + P (Windows/Linux) or Command + Shift + P (Mac), or right-click and select "Preview HTML" from the context menu.</div>
                 </div>
             </div>
             `;
-        }
-        const box = document.querySelector("#preview-button-error-alert") as HTMLElement | null;
-        if (box) {
-            const icon = box.querySelector('img') as HTMLImageElement | null;
-            if (icon) icon.src = chrome.runtime.getURL('icon/128.png');
+            const box = document.querySelector("#preview-button-error-alert") as HTMLElement | null;
+            if (box) {
+                const icon = box.querySelector('img') as HTMLImageElement | null;
+                if (icon) icon.src = chrome.runtime.getURL('icon/128.png');
 
-            const closeBtn = box.querySelector('button');
-            if (closeBtn) {
-                box.addEventListener('mouseenter', () => {
-                    closeBtn.style.display = 'block';
-                });
-                box.addEventListener('mouseleave', () => {
-                    closeBtn.style.display = 'none';
-                });
-                closeBtn.addEventListener('click', () => {
-                    box.style.display = 'none';
-                });
-                closeBtn.addEventListener('mouseover', () => {
-                    closeBtn.style.background='rgba(0,0,0,0.2)';
-                    // closeBtn.style.color='#000';
-                });
-                closeBtn.addEventListener('mouseout', () => {
-                    closeBtn.style.background='rgba(0,0,0,0.1)';
-                    // closeBtn.style.color='#555';
-                });
+                const closeBtn = box.querySelector('#close-button') as HTMLElement | null;
+                if (closeBtn) {
+                    box.addEventListener('mouseenter', () => {
+                        closeBtn.style.display = 'block';
+                    });
+                    box.addEventListener('mouseleave', () => {
+                        closeBtn.style.display = 'none';
+                    });
+                    closeBtn.addEventListener('click', () => {
+                        box.style.display = 'none';
+                    });
+                    closeBtn.addEventListener('mouseover', () => {
+                        closeBtn.style.background='rgba(0,0,0,0.2)';
+                    });
+                    closeBtn.addEventListener('mouseout', () => {
+                        closeBtn.style.background='rgba(0,0,0,0.1)';
+                    });
+                }
+
+                const foreverCloseBtn = box.querySelector('#forever-close-button') as HTMLElement | null;
+                if (foreverCloseBtn) {
+                    box.addEventListener('mouseover', () => {
+                        foreverCloseBtn.style.display = 'block';
+                    });
+                    box.addEventListener('mouseout', () => {
+                        foreverCloseBtn.style.display = 'none';
+                    });
+                    foreverCloseBtn.addEventListener('click', () => {
+                        box.style.display = 'none';
+                        // TODO
+                    });
+                    foreverCloseBtn.addEventListener('mouseover', () => {
+                        foreverCloseBtn.style.background='rgba(0,0,0,0.2)';
+                    });
+                    foreverCloseBtn.addEventListener('mouseout', () => {
+                        foreverCloseBtn.style.background='rgba(0,0,0,0.1)';
+                    });
+                }
+            
             }
         }
     }, 1000);
