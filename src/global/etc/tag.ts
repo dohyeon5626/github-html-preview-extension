@@ -1,3 +1,5 @@
+import { getNowVersion } from "../chrome/manifest";
+import { setLastNonActivatedAlertVersion } from "../chrome/storage";
 import { getProxyToken } from "./api";
 
 export let addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
@@ -122,7 +124,7 @@ export let checkPreviewButton = () => {
                     });
                     foreverCloseBtn.addEventListener('click', () => {
                         box.style.display = 'none';
-                        // TODO
+                        setLastNonActivatedAlertVersion(getNowVersion());
                     });
                     foreverCloseBtn.addEventListener('mouseover', () => {
                         foreverCloseBtn.style.background='rgba(0,0,0,0.2)';

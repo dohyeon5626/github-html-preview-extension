@@ -1,5 +1,10 @@
 import { addPreviewButton, checkPreviewButton } from "../../global/etc/tag";
-import { getToken } from '../../global/chrome/storage';
+import { getLastNonActivatedAlertVersion, getToken } from '../../global/chrome/storage';
+import { getNowVersion } from "../../global/chrome/manifest";
 
 addPreviewButton(getToken);
-checkPreviewButton();
+getLastNonActivatedAlertVersion((lastNonActivatedAlertVersion) => {
+    if(lastNonActivatedAlertVersion != getNowVersion()) checkPreviewButton();
+}, () => {
+    checkPreviewButton();
+});

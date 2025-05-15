@@ -1,0 +1,1 @@
+export let getNowVersion = () => chrome.runtime.getManifest().version;
