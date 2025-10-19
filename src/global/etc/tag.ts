@@ -34,7 +34,8 @@ export let checkPreviewButton = () => {
     setTimeout(() => {
         let url = location.href;
         if (url.startsWith("https://github.com/") && url.endsWith(".html") && !document.getElementById("html-preview") && !document.getElementById("preview-button-error-alert")) {
-            document.body.innerHTML +=
+            const boxWrapper = document.createElement("div");
+            boxWrapper.innerHTML =
             `
             <div id="preview-button-error-alert" style="
                 position: fixed;
@@ -58,9 +59,10 @@ export let checkPreviewButton = () => {
                     width: 28px;
                     border-radius: 50%;
                     border: 1px solid rgba(255,255,255,0.3);
-                    background: rgba(0,0,0,0.1);
-                    color: rgba(242,242,242,0.6);
+                    background: rgba(0,0,0,0.2);
+                    color: rgb(255,255,255);
                     font-size: 16px;
+                    font-weight: 600;
                     cursor: pointer;
                     display: none;">×</button>
                 <img style="
@@ -76,8 +78,8 @@ export let checkPreviewButton = () => {
                         <button id="forever-close-button" style="border-radius: 5px;
                             padding: 2px 12px;
                             border: 1px solid rgba(255,255,255,0.3);
-                            background: rgba(0,0,0,0.1);
-                            color: rgba(242,242,242,0.6);
+                            background: rgba(0,0,0,0.2);
+                            color: rgba(255,255,255);
                             font-size: 12px;
                             font-weight: 600;
                             cursor: pointer;
@@ -90,6 +92,8 @@ export let checkPreviewButton = () => {
                 </div>
             </div>
             `;
+            document.body.appendChild(boxWrapper.firstElementChild as HTMLElement);
+            
             const box = document.querySelector("#preview-button-error-alert") as HTMLElement | null;
             if (box) {
                 const icon = box.querySelector('img') as HTMLImageElement | null;
@@ -107,10 +111,10 @@ export let checkPreviewButton = () => {
                         box.style.display = 'none';
                     });
                     closeBtn.addEventListener('mouseover', () => {
-                        closeBtn.style.background='rgba(0,0,0,0.2)';
+                        closeBtn.style.background='rgba(0,0,0,0.3)';
                     });
                     closeBtn.addEventListener('mouseout', () => {
-                        closeBtn.style.background='rgba(0,0,0,0.1)';
+                        closeBtn.style.background='rgba(0,0,0,0.2)';
                     });
                 }
 
@@ -127,10 +131,10 @@ export let checkPreviewButton = () => {
                         setLastNonActivatedAlertVersion(getNowVersion());
                     });
                     foreverCloseBtn.addEventListener('mouseover', () => {
-                        foreverCloseBtn.style.background='rgba(0,0,0,0.2)';
+                        foreverCloseBtn.style.background='rgba(0,0,0,0.3)';
                     });
                     foreverCloseBtn.addEventListener('mouseout', () => {
-                        foreverCloseBtn.style.background='rgba(0,0,0,0.1)';
+                        foreverCloseBtn.style.background='rgba(0,0,0,0.2)';
                     });
                 }
             
