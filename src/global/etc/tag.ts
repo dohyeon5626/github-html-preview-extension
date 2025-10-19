@@ -4,7 +4,7 @@ import { getProxyToken } from "./api";
 
 export let addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
     if (document.getElementById("html-preview") === null) {
-        let btnGroup = document.querySelector(".Box-sc-g0xbh4-0 .prc-ButtonGroup-ButtonGroup-vcMeG:has(div > a)")
+        let btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vcMeG:has(div > a)")
         if (!btnGroup) return;
 
         for (let aTag of btnGroup.querySelectorAll("div > a")) {
