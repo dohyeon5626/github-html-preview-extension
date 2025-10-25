@@ -1,8 +1,9 @@
 import { getNowVersion } from "../chrome/manifest";
-import { setLastNonActivatedAlertVersion } from "../chrome/storage";
+import { getData, setData } from "../chrome/storage";
+import { StorageType } from "../type/storage-type";
 import { getProxyToken } from "./api";
 
-export const addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
+export const addPreviewButton = () => {
     if (document.getElementById("html-preview") === null) {
         let btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vcMeG:has(div > a)")
         if (!btnGroup) return;
@@ -19,12 +20,13 @@ export const addPreviewButton = (getToken: (success: (token: string) => void, fa
         }
 
         let urlData = location.href.replace("https://github.com/", "").split("/");
-        document.getElementById("html-preview")!.onclick = () => {
-            getToken(async (token) => {
+        document.getElementById("html-preview")!.onclick = async () => {
+            let token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
+            if (token != undefined && token != "") {
                 window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`);
-            }, () => {
+            } else {
                 window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}`);
-            });
+            }
         };
         document.querySelector("#preview-button-error-alert")?.remove()
     }
@@ -128,7 +130,7 @@ export const checkPreviewButton = () => {
                     });
                     foreverCloseBtn.addEventListener('click', () => {
                         box.style.display = 'none';
-                        setLastNonActivatedAlertVersion(getNowVersion());
+                        setData({[StorageType.LAST_NON_ACTIVATED_ALERT_VERSION]: getNowVersion()});
                     });
                     foreverCloseBtn.addEventListener('mouseover', () => {
                         foreverCloseBtn.style.background='rgba(0,0,0,0.3)';

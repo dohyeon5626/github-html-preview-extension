@@ -4,11 +4,12 @@ import { getRedirectUrl, launchWebAuthFlow } from '../../global/chrome/identity'
 import { addRuntimeInstalledListener } from '../../global/chrome/install';
 import { addMessageListener, sendMessage } from '../../global/chrome/message';
 import { executeScript, executeScriptFile } from '../../global/chrome/script';
-import { getToken } from '../../global/chrome/storage';
+import { getData } from '../../global/chrome/storage';
 import { addTabUpdatedListener, createTab, getActiveTab } from '../../global/chrome/tab';
 import { getGithubOauthToken, getProxyToken } from '../../global/etc/api';
 import { deletePreviewButton } from '../../global/etc/tag';
 import { MessageType } from '../../global/type/message-type';
+import { StorageType } from '../../global/type/storage-type';
 
 addTabUpdatedListener(
     (url: string, tabId: number) => {
@@ -24,13 +25,14 @@ addRuntimeInstalledListener(() => {
     createContextMenu("Preview Html", "https://github.com/**.html");
 });
   
-addContextMenusOnClickedListener((info, tab) => {
+addContextMenusOnClickedListener(async (info, tab) => {
     let urlData = info.pageUrl.replace("https://github.com/", "").split("/");
-    getToken(async (token) => {
+    let token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
+    if (token != undefined && token != "") {
         createTab(`https://github-html-preview.dohyeon5626.com/?${info.pageUrl}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`, tab);
-    }, () => {
+    } else {
         createTab(`https://github-html-preview.dohyeon5626.com/?${info.pageUrl}`, tab);
-    });
+    }
 });
 
 addOnCommandListener(async (command) => {
@@ -40,11 +42,12 @@ addOnCommandListener(async (command) => {
 
         if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
             let urlData = url.replace("https://github.com/", "").split("/");
-            getToken(async (token) => {
+            let token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
+            if (token != undefined && token != "") {
                 createTab(`https://github-html-preview.dohyeon5626.com/?${url}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`, tab);
-            }, () => {
+            } else {
                 createTab(`https://github-html-preview.dohyeon5626.com/?${url}`, tab);
-            });
+            }
         }
     }
 });
