@@ -1,1 +1,1 @@
-export let getNowVersion = () => chrome.runtime.getManifest().version;
+export const getNowVersion = () => chrome.runtime.getManifest().version;

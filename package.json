@@ -2,7 +2,7 @@
   "name": "github-html-preview-extension",
   "version": "4.3",
   "scripts": {
-    "build": "rm -rf ./dist && webpack --config webpack/webpack.config.js",
+    "build": "rm -rf ./dist && webpack --config webpack.config.js",
     "zip": "npm run build && zip -r ./dist.zip ./dist/*"
   },
   "repository": {

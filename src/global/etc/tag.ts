@@ -2,7 +2,7 @@ import { getNowVersion } from "../chrome/manifest";
 import { setLastNonActivatedAlertVersion } from "../chrome/storage";
 import { getProxyToken } from "./api";
 
-export let addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
+export const addPreviewButton = (getToken: (success: (token: string) => void, fail: () => void) => void) => {
     if (document.getElementById("html-preview") === null) {
         let btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vcMeG:has(div > a)")
         if (!btnGroup) return;
@@ -30,7 +30,7 @@ export let addPreviewButton = (getToken: (success: (token: string) => void, fail
     }
 }
 
-export let checkPreviewButton = () => {
+export const checkPreviewButton = () => {
     setTimeout(() => {
         let url = location.href;
         if (url.startsWith("https://github.com/") && url.endsWith(".html") && !document.getElementById("html-preview") && !document.getElementById("preview-button-error-alert")) {
@@ -143,7 +143,7 @@ export let checkPreviewButton = () => {
     }, 1000);
 }
 
-export let deletePreviewButton = () => {
+export const deletePreviewButton = () => {
     document.getElementById("html-preview")?.parentElement?.remove()
     document.getElementById("preview-button-error-alert")?.remove()
 }

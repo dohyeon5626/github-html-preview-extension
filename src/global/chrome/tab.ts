@@ -1,4 +1,4 @@
-export let addTabUpdatedListener = (func: (url: string, tabId: number) => void) => {
+export const addTabUpdatedListener = (func: (url: string, tabId: number) => void) => {
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         if (tab.url) {
             func(tab.url!, tabId);
@@ -6,7 +6,7 @@ export let addTabUpdatedListener = (func: (url: string, tabId: number) => void) 
     });
 }
 
-export let createTab = (url: string, tab: chrome.tabs.Tab) => {
+export const createTab = (url: string, tab: chrome.tabs.Tab) => {
     chrome.tabs.create({ index: tab.index + 1, openerTabId: tab.id, url: url });
 }
 
@@ -16,4 +16,8 @@ export const getActiveTab = () => {
             resolve(tabs[0])
         });
     });
+}
+
+export const queryInTab = (func: (tabs: chrome.tabs.Tab[]) => void) => {
+    chrome.tabs.query({}, func);
 }

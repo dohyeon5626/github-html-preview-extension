@@ -10,7 +10,7 @@ module.exports = {
       "preview-page-content": ["./src/domain/content/preview-page-content.ts"]
    },
    output: {
-      path: path.join(__dirname, "../dist"),
+      path: path.join(__dirname, "dist"),
       filename: "[name].js"
    },
    resolve: {

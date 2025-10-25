@@ -1,11 +1,14 @@
 import { addOnCommandListener } from '../../global/chrome/command';
 import { addContextMenusOnClickedListener, createContextMenu } from '../../global/chrome/context-menu';
+import { getRedirectUrl, launchWebAuthFlow } from '../../global/chrome/identity';
 import { addRuntimeInstalledListener } from '../../global/chrome/install';
+import { addMessageListener, sendMessage } from '../../global/chrome/message';
 import { executeScript, executeScriptFile } from '../../global/chrome/script';
 import { getToken } from '../../global/chrome/storage';
 import { addTabUpdatedListener, createTab, getActiveTab } from '../../global/chrome/tab';
-import { getProxyToken } from '../../global/etc/api';
+import { getGithubOauthToken, getProxyToken } from '../../global/etc/api';
 import { deletePreviewButton } from '../../global/etc/tag';
+import { MessageType } from '../../global/type/message-type';
 
 addTabUpdatedListener(
     (url: string, tabId: number) => {
@@ -45,3 +48,26 @@ addOnCommandListener(async (command) => {
         }
     }
 });
+
+addMessageListener(
+    (request, callback) => {
+        (async () => {
+            if(request.action === MessageType.START_OAUTH) {
+                let redirectUrl = getRedirectUrl("github")
+                launchWebAuthFlow(
+                    `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirect_uri=${redirectUrl}`,
+                    async (responseUrl) => {
+                        if (responseUrl) {
+                            const code = new URL(responseUrl).searchParams.get('code');
+                            if (code) {
+                                let info = await getGithubOauthToken(code, redirectUrl);
+                                console.log(info);
+                                // TODO
+                            }
+                        }
+                    });
+            }
+        })();
+        return true;
+    }
+)

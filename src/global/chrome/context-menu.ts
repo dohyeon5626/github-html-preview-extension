@@ -1,4 +1,4 @@
-export let createContextMenu = (title: string, documentUrlPattern: string) => {
+export const createContextMenu = (title: string, documentUrlPattern: string) => {
     chrome.contextMenus.create({
         id: title,
         title: title,
@@ -7,6 +7,6 @@ export let createContextMenu = (title: string, documentUrlPattern: string) => {
     });
 }
 
-export let addContextMenusOnClickedListener = (func: (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => void) => {
+export const addContextMenusOnClickedListener = (func: (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => void) => {
     chrome.contextMenus.onClicked.addListener((info, tab) => func(info, tab!!))
 }
