@@ -3,12 +3,12 @@ import { getData, setData } from "../../global/chrome/storage";
 import { queryInTab } from "../../global/chrome/tab";
 import { StorageType } from "../../global/type/storage-type";
 
-let getInput = (): HTMLInputElement => {
+const getInput = (): HTMLInputElement => {
     return (<HTMLInputElement>document.getElementById("token-input"))!;
 }
 
 (async () => {
-    let token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
+    const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
     if (token != undefined && token != "") {
         getInput().value = token;
     } else {

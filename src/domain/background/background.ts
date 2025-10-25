@@ -7,7 +7,6 @@ import { executeScript, executeScriptFile } from '../../global/chrome/script';
 import { getData } from '../../global/chrome/storage';
 import { addTabUpdatedListener, createTab, getActiveTab } from '../../global/chrome/tab';
 import { getGithubOauthToken, getProxyToken } from '../../global/etc/api';
-import { deletePreviewButton } from '../../global/etc/tag';
 import { MessageType } from '../../global/type/message-type';
 import { StorageType } from '../../global/type/storage-type';
 
@@ -16,7 +15,10 @@ addTabUpdatedListener(
         if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
             executeScriptFile(tabId, "html-page-content.js");
         } else {
-            executeScript(tabId, deletePreviewButton);
+            executeScript(tabId, () => {
+                document.getElementById("html-preview")?.parentElement?.remove()
+                document.getElementById("preview-button-error-alert")?.remove()
+            });
         }
     }
 );
@@ -26,8 +28,8 @@ addRuntimeInstalledListener(() => {
 });
   
 addContextMenusOnClickedListener(async (info, tab) => {
-    let urlData = info.pageUrl.replace("https://github.com/", "").split("/");
-    let token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
+    const urlData = info.pageUrl.replace("https://github.com/", "").split("/");
+    const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
     if (token != undefined && token != "") {
         createTab(`https://github-html-preview.dohyeon5626.com/?${info.pageUrl}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`, tab);
     } else {
@@ -37,12 +39,12 @@ addContextMenusOnClickedListener(async (info, tab) => {
 
 addOnCommandListener(async (command) => {
     if(command === "preview") {
-        let tab = await getActiveTab();
-        let url = tab.url!!;
+        const tab = await getActiveTab();
+        const url = tab.url!!;
 
         if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
-            let urlData = url.replace("https://github.com/", "").split("/");
-            let token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
+            const urlData = url.replace("https://github.com/", "").split("/");
+            const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
             if (token != undefined && token != "") {
                 createTab(`https://github-html-preview.dohyeon5626.com/?${url}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`, tab);
             } else {
@@ -56,14 +58,14 @@ addMessageListener(
     (request, callback) => {
         (async () => {
             if(request.action === MessageType.START_OAUTH) {
-                let redirectUrl = getRedirectUrl("github")
+                const redirectUrl = getRedirectUrl("github")
                 launchWebAuthFlow(
                     `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirect_uri=${redirectUrl}`,
                     async (responseUrl) => {
                         if (responseUrl) {
                             const code = new URL(responseUrl).searchParams.get('code');
                             if (code) {
-                                let info = await getGithubOauthToken(code, redirectUrl);
+                                const info = await getGithubOauthToken(code, redirectUrl);
                                 console.log(info);
                                 // TODO
                             }
