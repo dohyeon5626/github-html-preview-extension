@@ -4,7 +4,7 @@ import { getRedirectUrl, launchWebAuthFlow } from '../../global/chrome/identity'
 import { addRuntimeInstalledListener } from '../../global/chrome/install';
 import { addMessageListener, sendMessage } from '../../global/chrome/message';
 import { executeScript, executeScriptFile } from '../../global/chrome/script';
-import { getData } from '../../global/chrome/storage';
+import { getData, setData } from '../../global/chrome/storage';
 import { addTabUpdatedListener, createTab, getActiveTab } from '../../global/chrome/tab';
 import { getGithubOauthToken, getProxyToken } from '../../global/etc/api';
 import { MessageType } from '../../global/type/message-type';
@@ -66,8 +66,12 @@ addMessageListener(
                             const code = new URL(responseUrl).searchParams.get('code');
                             if (code) {
                                 const info = await getGithubOauthToken(code, redirectUrl);
-                                console.log(info);
-                                // TODO
+                                setData({
+                                    [StorageType.GITHUB_ACCESS_TOKEN]: info.access.token,
+                                    [StorageType.GITHUB_ACCESS_TOKEN_EXPIRES_IN]: Date.now() + info.access.expiresIn * 1000,
+                                    [StorageType.GITHUB_REFRESH_TOKEN]: info.refresh.token,
+                                    [StorageType.GITHUB_REFRESH_TOKEN_EXPIRES_IN]: Date.now() + info.refresh.expiresIn * 1000
+                                });
                             }
                         }
                     });
