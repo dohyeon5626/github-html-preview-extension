@@ -1,3 +1,7 @@
+export enum MessageType {
+    START_OAUTH
+}
+
 export enum StorageType {
     INPUT_TOKEN = "inputToken",
     LAST_NON_ACTIVATED_ALERT_VERSION = "lastNonActivatedAlertVersion",

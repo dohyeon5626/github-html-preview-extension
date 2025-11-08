@@ -4,10 +4,10 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
    mode: "production",
    entry: {
-      "background": ["./src/domain/background/background.ts"],
-      "popup": ["./src/domain/popup/popup.ts"],
-      "html-page-content": ["./src/domain/content/html-page-content.ts"],
-      "preview-page-content": ["./src/domain/content/preview-page-content.ts"]
+      "background": ["./src/app/background.ts"],
+      "popup": ["./src/app/popup.ts"],
+      "html-page-content": ["./src/app/html-page-content.ts"],
+      "preview-page-content": ["./src/app/preview-page-content.ts"]
    },
    output: {
       path: path.join(__dirname, "dist"),

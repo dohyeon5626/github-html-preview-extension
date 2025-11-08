@@ -1,7 +1,5 @@
-import { executeScript } from "../../global/chrome/script";
-import { getData, setData } from "../../global/chrome/storage";
-import { queryInTab } from "../../global/chrome/tab";
-import { StorageType } from "../../global/type/storage-type";
+import { executeScript, getData, queryInTab, setData } from "../shared/chrome";
+import { StorageType } from "../shared/type";
 
 const getInput = (): HTMLInputElement => {
     return (<HTMLInputElement>document.getElementById("token-input"))!;

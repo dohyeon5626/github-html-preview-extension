@@ -1,14 +1,6 @@
-import { addOnCommandListener } from '../../global/chrome/command';
-import { addContextMenusOnClickedListener, createContextMenu } from '../../global/chrome/context-menu';
-import { getRedirectUrl, launchWebAuthFlow } from '../../global/chrome/identity';
-import { addRuntimeInstalledListener } from '../../global/chrome/install';
-import { addMessageListener, sendMessage } from '../../global/chrome/message';
-import { executeScript, executeScriptFile } from '../../global/chrome/script';
-import { getData, setData } from '../../global/chrome/storage';
-import { addTabUpdatedListener, createTab, getActiveTab } from '../../global/chrome/tab';
-import { getGithubOauthToken, getProxyToken } from '../../global/etc/api';
-import { MessageType } from '../../global/type/message-type';
-import { StorageType } from '../../global/type/storage-type';
+import { addContextMenusOnClickedListener, addMessageListener, addOnCommandListener, addRuntimeInstalledListener, addTabUpdatedListener, createContextMenu, createTab, executeScript, executeScriptFile, getActiveTab, getData, getRedirectUrl, launchWebAuthFlow, setData } from '../shared/chrome';
+import { getGithubOauthToken, getProxyToken } from '../shared/api';
+import { MessageType, StorageType } from '../shared/type';
 
 addTabUpdatedListener(
     (url: string, tabId: number) => {
@@ -60,7 +52,7 @@ addMessageListener(
             if(request.action === MessageType.START_OAUTH) {
                 const redirectUrl = getRedirectUrl("github")
                 launchWebAuthFlow(
-                    `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirect_uri=${redirectUrl}`,
+                    `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirectUri=${redirectUrl}`,
                     async (responseUrl) => {
                         if (responseUrl) {
                             const code = new URL(responseUrl).searchParams.get('code');

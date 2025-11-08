@@ -1,6 +1,6 @@
-import { getData, setData } from "../../global/chrome/storage";
-import { getProxyToken } from "../../global/etc/api";
-import { StorageType } from "../../global/type/storage-type";
+import { getData, setData } from "../shared/chrome";
+import { getProxyToken } from "../shared/api";
+import { StorageType } from "../shared/type";
 
 const tokenInputBoxSetting = async () => {
     if(document.getElementById("raw-token-button")) {

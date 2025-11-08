@@ -1,7 +1,6 @@
-import { setData, getData } from '../../global/chrome/storage';
-import { getNowVersion } from "../../global/chrome/manifest";
-import { StorageType } from "../../global/type/storage-type";
-import { getProxyToken } from '../../global/etc/api';
+import { setData, getData, getNowVersion } from '../shared/chrome';
+import { getProxyToken } from '../shared/api';
+import { StorageType } from '../shared/type';
 
 if (document.getElementById("html-preview") === null) {
     const btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vcMeG:has(div > a)")

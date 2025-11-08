@@ -24,7 +24,7 @@ export const getGithubOauthToken = (code: string, redirectUrl: string) => {
     return new Promise<GithubOauthTokenResponse>((resolve) => {
         baseAxios().post<GithubOauthTokenResponse>(`/github-html-preview/github-oauth/token`, null, { params: {
             "code": code,
-            "redirect_uri": redirectUrl
+            "redirectUrl": redirectUrl
         }})
         .then(it => resolve(it.data))
     });
