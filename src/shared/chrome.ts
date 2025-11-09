@@ -14,7 +14,7 @@ export const createContextMenu = (title: string, documentUrlPattern: string) => 
 }
 
 export const addContextMenusOnClickedListener = (func: (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => void) => {
-    chrome.contextMenus.onClicked.addListener((info, tab) => func(info, tab!!))
+    chrome.contextMenus.onClicked.addListener((info, tab) => func(info, tab!))
 }
 
 export const getRedirectUrl = (path: string) => {

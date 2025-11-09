@@ -32,7 +32,7 @@ addContextMenusOnClickedListener(async (info, tab) => {
 addOnCommandListener(async (command) => {
     if(command === "preview") {
         const tab = await getActiveTab();
-        const url = tab.url!!;
+        const url = tab.url!;
 
         if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
             const urlData = url.replace("https://github.com/", "").split("/");
