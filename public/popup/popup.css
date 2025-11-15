@@ -1,9 +1,41 @@
+#github-oauth-box{
+    width: 270px;
+    margin: 5px;
+}
 #token-box {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    width: 280px;
+    width: 270px;
+    margin: 5px;
 }
+#github-oauth-button-msg {
+    margin-left: 5px;
+}
+
+#github-oauth-button {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    
+    padding: 5px 12px;
+    border: 1px solid;
+    border-radius: 6px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.logout {
+    background-color: #2DA44E;
+    border-color: #8b949e;
+}
+.login {
+    background-color: #D0D7DE;
+    border-color: #D0D7DE;
+}
+
 #token-input-box {
     width: 180px;
     height: 24px;
@@ -25,7 +57,7 @@
     background-color: #F6F8FA;
 }
 #token-button {
-    height: 34px;
+    height: 36px;
     color: #FFFFFF;
     background-color: #2DA44E;
     padding: 8px 12px;
