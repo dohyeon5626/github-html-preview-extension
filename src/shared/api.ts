@@ -8,12 +8,12 @@ export interface TokenProxylResponse {
     token: string
 }
 
-export const getProxyToken = (user: string, repo: string, token: string) => {
+export const getProxyToken = (user: string, repo: string, tokenList: string[]) => {
     return new Promise<string>((resolve) => {
         baseAxios().post<TokenProxylResponse>(`/github-html-preview/token`, {
             "user" : user,
             "repo" : repo,
-            "token" : token
+            "tokenList" : tokenList
         })
         .then(it => it.data)
         .then(it => resolve(it.token))
@@ -24,7 +24,16 @@ export const getGithubOauthToken = (code: string, redirectUrl: string) => {
     return new Promise<GithubOauthTokenResponse>((resolve) => {
         baseAxios().post<GithubOauthTokenResponse>(`/github-html-preview/github-oauth/token`, null, { params: {
             "code": code,
-            "redirectUrl": redirectUrl
+            "redirectUri": redirectUrl
+        }})
+        .then(it => resolve(it.data))
+    });
+}
+
+export const refreshGithubOauthToken = (refreshToken: string) => {
+    return new Promise<GithubOauthTokenResponse>((resolve) => {
+        baseAxios().put<GithubOauthTokenResponse>(`/github-html-preview/github-oauth/token`, null, { params: {
+            "refreshToken": refreshToken
         }})
         .then(it => resolve(it.data))
     });

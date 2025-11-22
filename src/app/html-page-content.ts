@@ -2,6 +2,7 @@ import { getData, getNowVersion } from '../shared/chrome';
 import { getProxyToken } from '../shared/api';
 import { StorageType } from '../shared/type';
 import { appendTagBefore, createHtmlPreviewButtonBox, createPreviewButtonErrorAlert, getHtmlPreview, getPreviewButtonErrorAlert } from '../core/tag-service';
+import { getHtmlPreviewPageUrl } from '../core/auth-service';
 
 const htmlPreview = getHtmlPreview();
 if (!htmlPreview) {
@@ -15,12 +16,7 @@ if (!htmlPreview) {
 
         const urlData = location.href.replace("https://github.com/", "").split("/");
         getHtmlPreview()!.onclick = async () => {
-            const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
-            if (token != undefined && token != "") {
-                window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`);
-            } else {
-                window.open(`https://github-html-preview.dohyeon5626.com/?${location.href}`);
-            }
+            window.open(await getHtmlPreviewPageUrl(location.href, urlData[0], urlData[1]));
         };
         getPreviewButtonErrorAlert()?.remove()
     }

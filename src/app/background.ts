@@ -1,4 +1,4 @@
-import { addContextMenusOnClickedListener, addMessageListener, addOnCommandListener, addRuntimeInstalledListener, addTabUpdatedListener, createContextMenu, createTab, executeScript, executeScriptFile, getActiveTab, getData, getRedirectUrl, launchWebAuthFlow, setData } from '../shared/chrome';
+import { addContextMenusOnClickedListener, addMessageListener, addOnCommandListener, addRuntimeInstalledListener, addTabUpdatedListener, createContextMenu, createTab, executeScript, executeScriptFile, getActiveTab, getData, getRedirectUrl, launchWebAuthFlow, queryInTab, removeTab, setData } from '../shared/chrome';
 import { getGithubOauthToken, getProxyToken } from '../shared/api';
 import { MessageType, StorageType } from '../shared/type';
 
@@ -49,26 +49,36 @@ addOnCommandListener(async (command) => {
 addMessageListener(
     (request, callback) => {
         (async () => {
-            if(request.action === MessageType.START_OAUTH) {
-                const redirectUrl = getRedirectUrl("github")
-                launchWebAuthFlow(
+            if(request.action === MessageType.START_OAUTH || request.action === MessageType.START_AUTO_OAUTH) {
+                const redirectUrl = getRedirectUrl("github");
+                await launchWebAuthFlow(
                     `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirectUri=${redirectUrl}`,
+                    request.action === MessageType.START_OAUTH,
                     async (responseUrl) => {
                         if (responseUrl) {
                             const code = new URL(responseUrl).searchParams.get('code');
                             if (code) {
                                 const info = await getGithubOauthToken(code, redirectUrl);
-                                setData({
+                                await setData({
                                     [StorageType.GITHUB_ACCESS_TOKEN]: info.access.token,
                                     [StorageType.GITHUB_ACCESS_TOKEN_EXPIRES_IN]: Date.now() + info.access.expiresIn * 1000,
                                     [StorageType.GITHUB_REFRESH_TOKEN]: info.refresh.token,
                                     [StorageType.GITHUB_REFRESH_TOKEN_EXPIRES_IN]: Date.now() + info.refresh.expiresIn * 1000
                                 });
+                                callback(null);
                             }
                         }
+                    }
+                );
+            } else if(request.action === MessageType.REMOVE_OTHER_PAGE) {
+                queryInTab((tabs) => {
+                    tabs.filter(tab => tab.url?.startsWith("https://github-html-preview.dohyeon5626.com/")).forEach(tab => {
+                        if(!tab.active) removeTab(tab.id!);
                     });
+                });
             }
         })();
+        
         return true;
     }
 )

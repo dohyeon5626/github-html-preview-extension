@@ -1,5 +1,5 @@
 export enum MessageType {
-    START_OAUTH
+    START_OAUTH, START_AUTO_OAUTH, REMOVE_OTHER_PAGE
 }
 
 export enum StorageType {

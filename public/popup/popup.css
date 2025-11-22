@@ -1,18 +1,15 @@
 #github-oauth-box{
-    width: 270px;
     margin: 5px;
 }
 #token-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 270px;
     margin: 5px;
 }
 #github-oauth-button-msg {
     margin-left: 5px;
 }
-
 #github-oauth-button {
     width: 100%;
     height: 36px;
@@ -66,4 +63,5 @@
     border-color: #8b949e;
     vertical-align: middle;
     cursor: pointer;
+    margin-left: 5px;
 }

@@ -21,14 +21,21 @@ export const getRedirectUrl = (path: string) => {
     return chrome.identity.getRedirectURL(path);
 }
 
-export const launchWebAuthFlow = (url: string, func: (responseUrl?: string) => void) => {
-    chrome.identity.launchWebAuthFlow({
-        url: url,
-        interactive: true
-    }, (responseUrl) => {
-        if (chrome.runtime.lastError) return;
-        func(responseUrl)
+export const launchWebAuthFlow = async (url: string, interactive: boolean, func: (responseUrl?: string) => void) => {
+    const responseUrl = await new Promise<string | undefined>((resolve, reject) => {
+        chrome.identity.launchWebAuthFlow(
+        { url, interactive },
+        (response) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+                return;
+            }
+            resolve(response);
+        }
+        );
     });
+
+    func(responseUrl);
 }
 
 export const addRuntimeInstalledListener = (func: () => void) => {
@@ -73,6 +80,12 @@ export const setData = (items: Partial<{ [key in StorageType]: any }>) => {
     });
 }
 
+export const removeData = (keys: StorageType[]) => {
+    return new Promise<void>((resolve) => {
+        chrome.storage.sync.remove(keys, resolve);
+    });
+}
+
 export const addTabUpdatedListener = (func: (url: string, tabId: number) => void) => {
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         if (tab.url) {
@@ -95,4 +108,12 @@ export const getActiveTab = () => {
 
 export const queryInTab = (func: (tabs: chrome.tabs.Tab[]) => void) => {
     chrome.tabs.query({}, func);
+}
+
+export const removeTab = (tabId: number) => {
+    chrome.tabs.remove(tabId);
+}
+
+export const updateTab = (tabId: number, url: string) => {
+    chrome.tabs.update(tabId, { url: url });
 }
