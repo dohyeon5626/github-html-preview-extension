@@ -1,6 +1,7 @@
-import { addContextMenusOnClickedListener, addMessageListener, addOnCommandListener, addRuntimeInstalledListener, addTabUpdatedListener, createContextMenu, createTab, executeScript, executeScriptFile, getActiveTab, getData, getRedirectUrl, launchWebAuthFlow, queryInTab, removeTab, setData } from '../shared/chrome';
+import { addContextMenusOnClickedListener, addMessageListener, addOnCommandListener, addRuntimeInstalledListener, addTabUpdatedListener, createContextMenu, createTab, executeScript, executeScriptFile, getActiveTab, getData, getRedirectUrl, launchWebAuthFlow, queryInTab, removeTab, setData, updateTab } from '../shared/chrome';
 import { getGithubOauthToken, getProxyToken } from '../shared/api';
 import { MessageType, StorageType } from '../shared/type';
+import { getHtmlPreviewPageUrl } from '../core/auth-service';
 
 addTabUpdatedListener(
     (url: string, tabId: number) => {
@@ -49,22 +50,16 @@ addOnCommandListener(async (command) => {
 addMessageListener(
     (request, callback) => {
         (async () => {
-            if(request.action === MessageType.START_OAUTH || request.action === MessageType.START_AUTO_OAUTH) {
+            if(request.action === MessageType.START_OAUTH) {
                 const redirectUrl = getRedirectUrl("github");
                 await launchWebAuthFlow(
                     `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirectUri=${redirectUrl}`,
-                    request.action === MessageType.START_OAUTH,
                     async (responseUrl) => {
                         if (responseUrl) {
                             const code = new URL(responseUrl).searchParams.get('code');
                             if (code) {
-                                const info = await getGithubOauthToken(code, redirectUrl);
-                                await setData({
-                                    [StorageType.GITHUB_ACCESS_TOKEN]: info.access.token,
-                                    [StorageType.GITHUB_ACCESS_TOKEN_EXPIRES_IN]: Date.now() + info.access.expiresIn * 1000,
-                                    [StorageType.GITHUB_REFRESH_TOKEN]: info.refresh.token,
-                                    [StorageType.GITHUB_REFRESH_TOKEN_EXPIRES_IN]: Date.now() + info.refresh.expiresIn * 1000
-                                });
+                                const token = await getGithubOauthToken(code, redirectUrl);
+                                await setData({[StorageType.GITHUB_OAUTH_TOKEN]: token});
                                 callback(null);
                             }
                         }
@@ -76,6 +71,21 @@ addMessageListener(
                         if(!tab.active) removeTab(tab.id!);
                     });
                 });
+            } else if (request.action === MessageType.UPDATE_PAGE) {
+                queryInTab((tabs) => {
+                    tabs.filter(tab => tab.url?.startsWith("https://github-html-preview.dohyeon5626.com/")).forEach(async tab => {
+                        if (tab.active) {
+                            const url = tab.url!.split("?")[1].split("&")[0];
+                            const urlData = url.replace("https://github.com/", "").split("/");
+                            const user = urlData[0];
+                            const repo = urlData[1];
+                            updateTab(tab.id!, await getHtmlPreviewPageUrl(url, user, repo));
+                        } else {
+                            removeTab(tab.id!);
+                        }
+                    });
+                });
+                callback(null);
             }
         })();
         

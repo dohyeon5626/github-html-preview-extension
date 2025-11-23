@@ -8,6 +8,10 @@ export interface TokenProxylResponse {
     token: string
 }
 
+export interface OauthTokenResponse {
+    token: string
+}
+
 export const getProxyToken = (user: string, repo: string, tokenList: string[]) => {
     return new Promise<string>((resolve) => {
         baseAxios().post<TokenProxylResponse>(`/github-html-preview/token`, {
@@ -21,30 +25,12 @@ export const getProxyToken = (user: string, repo: string, tokenList: string[]) =
 }
 
 export const getGithubOauthToken = (code: string, redirectUrl: string) => {
-    return new Promise<GithubOauthTokenResponse>((resolve) => {
-        baseAxios().post<GithubOauthTokenResponse>(`/github-html-preview/github-oauth/token`, null, { params: {
+    return new Promise<string>((resolve) => {
+        baseAxios().post<OauthTokenResponse>(`/github-html-preview/github-oauth/token`, null, { params: {
             "code": code,
             "redirectUri": redirectUrl
         }})
-        .then(it => resolve(it.data))
+        .then(it => it.data)
+        .then(it => resolve(it.token))
     });
-}
-
-export const refreshGithubOauthToken = (refreshToken: string) => {
-    return new Promise<GithubOauthTokenResponse>((resolve) => {
-        baseAxios().put<GithubOauthTokenResponse>(`/github-html-preview/github-oauth/token`, null, { params: {
-            "refreshToken": refreshToken
-        }})
-        .then(it => resolve(it.data))
-    });
-}
-
-export interface GithubOauthTokenResponse {
-    access: GithubOauthTokenDetailResponse,
-    refresh: GithubOauthTokenDetailResponse
-}
-
-export interface GithubOauthTokenDetailResponse {
-    token: string,
-    expiresIn: number
 }

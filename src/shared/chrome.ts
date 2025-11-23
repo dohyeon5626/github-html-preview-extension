@@ -21,10 +21,10 @@ export const getRedirectUrl = (path: string) => {
     return chrome.identity.getRedirectURL(path);
 }
 
-export const launchWebAuthFlow = async (url: string, interactive: boolean, func: (responseUrl?: string) => void) => {
+export const launchWebAuthFlow = async (url: string, func: (responseUrl?: string) => void) => {
     const responseUrl = await new Promise<string | undefined>((resolve, reject) => {
         chrome.identity.launchWebAuthFlow(
-        { url, interactive },
+        { url, interactive: true },
         (response) => {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError);

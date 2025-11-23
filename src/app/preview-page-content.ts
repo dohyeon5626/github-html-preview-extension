@@ -24,7 +24,7 @@ const tokenInputBoxSetting = async () => {
             if (githubOauthButton.classList.contains("logout")) {
                 await sendMessage(MessageType.START_OAUTH);
             } else {
-                await removeData([StorageType.GITHUB_ACCESS_TOKEN, StorageType.GITHUB_ACCESS_TOKEN_EXPIRES_IN, StorageType.GITHUB_REFRESH_TOKEN, StorageType.GITHUB_REFRESH_TOKEN_EXPIRES_IN]);
+                await removeData([StorageType.GITHUB_OAUTH_TOKEN]);
             }
             const url = location.search.split("&")[0].replace("?", "");
             const urlData = url.replace("https://github.com/", "").split("/");
@@ -46,6 +46,7 @@ const tokenInputBoxSetting = async () => {
     }
 }
 
+tokenInputBoxSetting();
 (async () => {
     new MutationObserver((mutations) => {
         tokenInputBoxSetting();
