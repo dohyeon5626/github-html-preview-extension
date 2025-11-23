@@ -1,6 +1,6 @@
 import { getData, removeData, sendMessage, setData } from "../shared/chrome";
 import { MessageType, StorageType } from "../shared/type";
-import { appendTagBefore, createGithubOauthBox, createTokenButton, getGithubOauthButton, getRawTokenButton, getTokenBox, getTokenButton, getTokenInput, replaceTag } from "../core/tag-service";
+import { appendTagBefore, createGithubOauthBox, createTokenButton, getGithubOauthButton, getRawTokenButton, getTokenBox, getTokenButton, getTokenInput, isGithubOauthButtonLoading, replaceTag, updateGithubOauthButtonLoading } from "../core/tag-service";
 import { getHtmlPreviewPageUrl, isOauthTokenEnable } from "../core/auth-service";
 
 const tokenInputBoxSetting = async () => {
@@ -21,6 +21,9 @@ const tokenInputBoxSetting = async () => {
             githubOauthButton.classList.add("login");
         }
         githubOauthButton.onclick = async () => {
+            if (isGithubOauthButtonLoading(githubOauthButton)) return;
+            updateGithubOauthButtonLoading(githubOauthButton);
+            
             if (githubOauthButton.classList.contains("logout")) {
                 await sendMessage(MessageType.START_OAUTH);
             } else {

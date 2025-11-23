@@ -1,5 +1,4 @@
 import { getData, getNowVersion } from '../shared/chrome';
-import { getProxyToken } from '../shared/api';
 import { StorageType } from '../shared/type';
 import { appendTagBefore, createHtmlPreviewButtonBox, createPreviewButtonErrorAlert, getHtmlPreview, getPreviewButtonErrorAlert } from '../core/tag-service';
 import { getHtmlPreviewPageUrl } from '../core/auth-service';

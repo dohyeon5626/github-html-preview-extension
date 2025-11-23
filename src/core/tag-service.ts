@@ -5,6 +5,14 @@ export const getGithubOauthButton = (): HTMLElement | null => {
     return document.getElementById("github-oauth-button");
 }
 
+export const updateGithubOauthButtonLoading = (githubOauthButton: HTMLElement) => {
+    githubOauthButton.querySelector("#github-oauth-button-msg")!.textContent = "Loading...";
+}
+
+export const isGithubOauthButtonLoading = (githubOauthButton: HTMLElement): boolean => {
+    return githubOauthButton.querySelector("#github-oauth-button-msg")!.textContent == "Loading...";
+}
+
 export const getTokenBox = (): HTMLInputElement | null => {
     return (<HTMLInputElement>document.getElementById("token-box"));
 }

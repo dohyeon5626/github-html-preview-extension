@@ -1,17 +1,20 @@
-import { getHtmlPreviewPageUrl, isOauthTokenEnable } from "../core/auth-service";
-import { getGithubOauthButton, getTokenButton, getTokenInput } from "../core/tag-service";
-import { executeScript, getData, queryInTab, removeData, removeTab, sendMessage, setData, updateTab } from "../shared/chrome";
+import { isOauthTokenEnable } from "../core/auth-service";
+import { getGithubOauthButton, getTokenButton, getTokenInput, isGithubOauthButtonLoading, updateGithubOauthButtonLoading } from "../core/tag-service";
+import { getData, removeData, sendMessage, setData } from "../shared/chrome";
 import { MessageType, StorageType } from "../shared/type";
 
 (async () => {
     const githubOauthButton = getGithubOauthButton()!;
     
     if (await isOauthTokenEnable()) {
-        githubOauthButton.classList.remove("logout")
-        githubOauthButton.classList.add("login")
+        githubOauthButton.classList.remove("logout");
+        githubOauthButton.classList.add("login");
     }
 
     githubOauthButton.onclick = async () => {
+        if (isGithubOauthButtonLoading(githubOauthButton)) return;
+        updateGithubOauthButtonLoading(githubOauthButton);
+
         if (githubOauthButton.classList.contains("logout")) {
             await sendMessage(MessageType.START_OAUTH);
         } else {

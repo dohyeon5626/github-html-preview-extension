@@ -1,6 +1,6 @@
 import { getProxyToken } from "../shared/api";
-import { getData, removeData, sendMessage, setData } from "../shared/chrome";
-import { MessageType, StorageType } from "../shared/type";
+import { getData } from "../shared/chrome";
+import { StorageType } from "../shared/type";
 
 export const isOauthTokenEnable = async (): Promise<boolean> => {
     const data = await getData([StorageType.GITHUB_OAUTH_TOKEN]);
