@@ -43,8 +43,8 @@
     "commands" : {
         "preview": {
             "suggested_key": {
-                "default": "Ctrl+Shift+P",
-                "mac": "Command+Shift+P"
+                "default": "Ctrl+Shift+Y",
+                "mac": "Command+Shift+Y"
             },
             "description": "Preview Html"
         }

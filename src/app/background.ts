@@ -22,12 +22,7 @@ addRuntimeInstalledListener(() => {
   
 addContextMenusOnClickedListener(async (info, tab) => {
     const urlData = info.pageUrl.replace("https://github.com/", "").split("/");
-    const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
-    if (token != undefined && token != "") {
-        createTab(`https://github-html-preview.dohyeon5626.com/?${info.pageUrl}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`, tab);
-    } else {
-        createTab(`https://github-html-preview.dohyeon5626.com/?${info.pageUrl}`, tab);
-    }
+    createTab(await getHtmlPreviewPageUrl(info.pageUrl, urlData[0], urlData[1]), tab);
 });
 
 addOnCommandListener(async (command) => {
@@ -37,12 +32,7 @@ addOnCommandListener(async (command) => {
 
         if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
             const urlData = url.replace("https://github.com/", "").split("/");
-            const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
-            if (token != undefined && token != "") {
-                createTab(`https://github-html-preview.dohyeon5626.com/?${url}&${await getProxyToken(urlData[0], urlData[1], token)}&${new Date().getTime()}`, tab);
-            } else {
-                createTab(`https://github-html-preview.dohyeon5626.com/?${url}`, tab);
-            }
+            createTab(await getHtmlPreviewPageUrl(url, urlData[0], urlData[1]), tab);
         }
     }
 });
