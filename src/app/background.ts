@@ -43,7 +43,7 @@ addMessageListener(
             if(request.action === MessageType.START_OAUTH) {
                 const redirectUrl = getRedirectUrl("github");
                 await launchWebAuthFlow(
-                    `https://licorice-api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirectUri=${redirectUrl}`,
+                    `https://api.dohyeon5626.com/github-html-preview/github-oauth/authorize?redirectUri=${redirectUrl}`,
                     async (responseUrl) => {
                         if (responseUrl) {
                             const code = new URL(responseUrl).searchParams.get('code');

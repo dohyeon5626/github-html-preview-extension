@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseAxios = () => axios.create({
-    baseURL: 'https://licorice-api.dohyeon5626.com'
+    baseURL: 'https://api.dohyeon5626.com'
 });
 
 export interface TokenProxylResponse {
