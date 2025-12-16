@@ -5,7 +5,7 @@ import { getHtmlPreviewPageUrl } from '../core/auth-service';
 
 const htmlPreview = getHtmlPreview();
 if (!htmlPreview) {
-    const btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vcMeG:has(div > a)")
+    const btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vFUrY:has(div > a)")
     if (btnGroup) {
         for (const aTag of btnGroup.querySelectorAll("div > a")) {
             if (aTag.getAttribute("data-testid") === "raw-button") {
@@ -32,8 +32,9 @@ const checkPreviewButton = () => {
 
 (async () => {
     const lastNonActivatedAlertVersion = (await getData([StorageType.LAST_NON_ACTIVATED_ALERT_VERSION]))[StorageType.LAST_NON_ACTIVATED_ALERT_VERSION]
-    if (lastNonActivatedAlertVersion)
+    if (lastNonActivatedAlertVersion) {
         if(lastNonActivatedAlertVersion != getNowVersion()) checkPreviewButton();
-    else
+    } else {
         checkPreviewButton(); 
+    }
 })();
