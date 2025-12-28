@@ -6,6 +6,10 @@
 <img width="100%" align=center alt="readme" src="https://github.com/user-attachments/assets/4fcbc81f-f4a7-4bb9-b3f8-5b58533fdf4c">
 <br/><br/>
 
-This Chrome extension allows you to instantly preview HTML files on GitHub. With a single click, you can see the rendered HTML in a new tab, and it also supports private repositories when configured with your GitHub token.<br/><br/>
+This Chrome extension allows you to instantly preview HTML files on GitHub. With a single click, you can see the rendered HTML in a new tab, and it also supports private repositories when configured with your GitHub token.<br/>
+- Instant Preview: Click the preview button on any GitHub HTML page to see the rendered results in a new tab.
+- Private Repository Support: Configure your GitHub token to preview HTML files in private repositories.
+- Quick Access: Use Ctrl + Shift + Y (Windows/Linux) or Command + Shift + Y (Mac), or right-click and select "Preview HTML" from the context menu to open the preview.
+
 [Chrome Web Store](https://chromewebstore.google.com/detail/github-html-preview/pmpjligbgooljdpakhophgddmcipglna) | [Youtube](https://www.youtube.com/watch?v=1ILDesSpFls)<br/>
-> with [github-html-preview-page](https://github.com/dohyeon5626/github-html-preview-page), [serverless-functions](https://github.com/dohyeon5626/serverless-functions/tree/main/github-html-preview)
+> with [page](https://github.com/dohyeon5626/github-html-preview-page), [api](https://github.com/dohyeon5626/serverless-functions/tree/main/github-html-preview)
