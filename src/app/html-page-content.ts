@@ -5,26 +5,32 @@ import { getHtmlPreviewPageUrl } from '../core/auth-service';
 
 const htmlPreview = getHtmlPreview();
 if (!htmlPreview) {
-    const btnGroup = document.querySelector(".prc-ButtonGroup-ButtonGroup-vFUrY:has(div > a)")
-    if (btnGroup) {
-        for (const aTag of btnGroup.querySelectorAll("div > a")) {
-            if (aTag.getAttribute("data-testid") === "raw-button") {
-                appendTagBefore(btnGroup.firstElementChild!, createHtmlPreviewButtonBox(aTag.getAttribute("class")!));
+    try {
+        const btnGroup = document.querySelectorAll(".prc-ButtonGroup-ButtonGroup-vFUrY:has(div > a)")[1];
+        if (btnGroup) {
+            for (const aTag of btnGroup.querySelectorAll("div > a")) {
+                if (aTag.getAttribute("data-testid") === "raw-button") {
+                    appendTagBefore(btnGroup.firstElementChild!, createHtmlPreviewButtonBox(aTag.getAttribute("class")!));
+                }
             }
-        }
 
-        const urlData = location.href.replace("https://github.com/", "").split("/");
-        getHtmlPreview()!.onclick = async () => {
-            window.open(await getHtmlPreviewPageUrl(location.href, urlData[0], urlData[1]));
-        };
-        getPreviewButtonErrorAlert()?.remove()
-    }
+            const urlData = location.href.replace("https://github.com/", "").split("/");
+            getHtmlPreview()!.onclick = async () => {
+                window.open(await getHtmlPreviewPageUrl(location.href, urlData[0], urlData[1]));
+            };
+            getPreviewButtonErrorAlert()?.remove()
+        }
+    } catch(ignore) {}
+}
+
+if (location.href.split("/")[5] == "edit") {
+    getPreviewButtonErrorAlert()?.remove()
 }
 
 const checkPreviewButton = () => {
     setTimeout(() => {
         const url = location.href;
-        if (url.startsWith("https://github.com/") && url.endsWith(".html") && !getHtmlPreview() && !getPreviewButtonErrorAlert()) {
+        if (url.startsWith("https://github.com/") && url.endsWith(".html") && url.split("/")[5] == "blob" && !getHtmlPreview() && !getPreviewButtonErrorAlert()) {
             document.body.appendChild(createPreviewButtonErrorAlert());
         }
     }, 1000);
