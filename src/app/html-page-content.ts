@@ -6,7 +6,7 @@ import { getHtmlPreviewPageUrl } from '../core/auth-service';
 const htmlPreview = getHtmlPreview();
 if (!htmlPreview) {
     try {
-        const btnGroup = document.querySelectorAll(".prc-ButtonGroup-ButtonGroup-vFUrY:has(div > a)")[1];
+        const btnGroup = document.querySelector('a[data-testid="raw-button"]')?.parentElement?.parentElement;
         if (btnGroup) {
             for (const aTag of btnGroup.querySelectorAll("div > a")) {
                 if (aTag.getAttribute("data-testid") === "raw-button") {
