@@ -1,6 +1,6 @@
 {
   "name": "github-html-preview-extension",
-  "version": "5.3",
+  "version": "5.4",
   "scripts": {
     "build": "rm -rf ./dist && webpack --config webpack.config.js",
     "zip": "npm run build && zip -r ./dist.zip ./dist/*"
