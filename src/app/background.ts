@@ -1,7 +1,7 @@
 import { addContextMenusOnClickedListener, addMessageListener, addOnCommandListener, addRuntimeInstalledListener, addTabUpdatedListener, createContextMenu, createTab, executeScript, executeScriptFile, getActiveTab, getData, getRedirectUrl, launchWebAuthFlow, queryInTab, removeTab, setData, updateTab } from '../shared/chrome';
 import { getGithubOauthToken, getProxyToken } from '../shared/api';
 import { MessageType, StorageType } from '../shared/type';
-import { getHtmlPreviewPageUrl } from '../core/auth-service';
+import { getHtmlPreviewPageUrl, parseGithubUrl } from '../core/auth-service';
 
 addTabUpdatedListener(
     (url: string, tabId: number) => {
@@ -21,8 +21,8 @@ addRuntimeInstalledListener(() => {
 });
   
 addContextMenusOnClickedListener(async (info, tab) => {
-    const urlData = info.pageUrl.replace("https://github.com/", "").split("/");
-    createTab(await getHtmlPreviewPageUrl(info.pageUrl, urlData[0], urlData[1]), tab);
+    const { user, repo } = parseGithubUrl(info.pageUrl);
+    createTab(await getHtmlPreviewPageUrl(info.pageUrl, user, repo), tab);
 });
 
 addOnCommandListener(async (command) => {
@@ -31,8 +31,8 @@ addOnCommandListener(async (command) => {
         const url = tab.url!;
 
         if (url.startsWith("https://github.com/") && url.endsWith(".html")) {
-            const urlData = url.replace("https://github.com/", "").split("/");
-            createTab(await getHtmlPreviewPageUrl(url, urlData[0], urlData[1]), tab);
+            const { user, repo } = parseGithubUrl(url);
+            createTab(await getHtmlPreviewPageUrl(url, user, repo), tab);
         }
     }
 });
@@ -66,9 +66,7 @@ addMessageListener(
                     tabs.filter(tab => tab.url?.startsWith("https://github-html-preview.dohyeon5626.com/")).forEach(async tab => {
                         if (tab.active) {
                             const url = tab.url!.split("?")[1].split("&")[0];
-                            const urlData = url.replace("https://github.com/", "").split("/");
-                            const user = urlData[0];
-                            const repo = urlData[1];
+                            const { user, repo } = parseGithubUrl(url);
                             updateTab(tab.id!, await getHtmlPreviewPageUrl(url, user, repo));
                         } else {
                             removeTab(tab.id!);

@@ -1,7 +1,7 @@
 import { getData, getNowVersion } from '../shared/chrome';
 import { StorageType } from '../shared/type';
 import { appendTagBefore, createHtmlPreviewButtonBox, createPreviewButtonErrorAlert, getHtmlPreview, getPreviewButtonErrorAlert } from '../core/tag-service';
-import { getHtmlPreviewPageUrl } from '../core/auth-service';
+import { getHtmlPreviewPageUrl, parseGithubUrl } from '../core/auth-service';
 
 const htmlPreview = getHtmlPreview();
 if (!htmlPreview) {
@@ -14,9 +14,9 @@ if (!htmlPreview) {
                 }
             }
 
-            const urlData = location.href.replace("https://github.com/", "").split("/");
+            const { user, repo } = parseGithubUrl(location.href);
             getHtmlPreview()!.onclick = async () => {
-                window.open(await getHtmlPreviewPageUrl(location.href, urlData[0], urlData[1]));
+                window.open(await getHtmlPreviewPageUrl(location.href, user, repo));
             };
             getPreviewButtonErrorAlert()?.remove()
         }

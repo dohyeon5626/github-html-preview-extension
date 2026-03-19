@@ -1,7 +1,13 @@
 import { getData, removeData, sendMessage, setData } from "../shared/chrome";
 import { MessageType, StorageType } from "../shared/type";
 import { appendTagBefore, createGithubOauthBox, createTokenButton, getGithubOauthButton, getRawTokenButton, getTokenBox, getTokenButton, getTokenInput, isGithubOauthButtonLoading, replaceTag, updateGithubOauthButtonLoading } from "../core/tag-service";
-import { getHtmlPreviewPageUrl, isOauthTokenEnable } from "../core/auth-service";
+import { getHtmlPreviewPageUrl, isOauthTokenEnable, parseGithubUrl } from "../core/auth-service";
+
+const getPreviewUrl = async (): Promise<string> => {
+    const url = location.search.split("&")[0].replace("?", "");
+    const { user, repo } = parseGithubUrl(url);
+    return getHtmlPreviewPageUrl(url, user, repo);
+}
 
 const tokenInputBoxSetting = async () => {
     const originButton = getRawTokenButton();
@@ -9,7 +15,7 @@ const tokenInputBoxSetting = async () => {
 
     const input = getTokenInput();
     if (input) {
-        const githubOauthBox = createGithubOauthBox()!;
+        const githubOauthBox = createGithubOauthBox();
         appendTagBefore(getTokenBox()!, githubOauthBox);
 
         const token = (await getData([StorageType.INPUT_TOKEN]))[StorageType.INPUT_TOKEN];
@@ -23,42 +29,28 @@ const tokenInputBoxSetting = async () => {
         githubOauthButton.onclick = async () => {
             if (isGithubOauthButtonLoading(githubOauthButton)) return;
             updateGithubOauthButtonLoading(githubOauthButton);
-            
+
             if (githubOauthButton.classList.contains("logout")) {
                 await sendMessage(MessageType.START_OAUTH);
             } else {
                 await removeData([StorageType.GITHUB_OAUTH_TOKEN]);
             }
-            const url = location.search.split("&")[0].replace("?", "");
-            const urlData = url.replace("https://github.com/", "").split("/");
-            const user = urlData[0];
-            const repo = urlData[1];
-            location.href = await getHtmlPreviewPageUrl(url, user, repo);
+            location.href = await getPreviewUrl();
         }
-        
-        getTokenButton()!.onclick = async () => {
-            const token = input.value;
-            await setData({[StorageType.INPUT_TOKEN]: token});
 
-            const url = location.search.split("&")[0].replace("?", "");
-            const urlData = url.replace("https://github.com/", "").split("/");
-            const user = urlData[0];
-            const repo = urlData[1];
-            location.href = await getHtmlPreviewPageUrl(url, user, repo);
+        getTokenButton()!.onclick = async () => {
+            await setData({[StorageType.INPUT_TOKEN]: input.value});
+            location.href = await getPreviewUrl();
         };
     }
 }
 
 tokenInputBoxSetting();
-(async () => {
-    new MutationObserver((mutations) => {
-        tokenInputBoxSetting();
-    }).observe(document, {
-        childList: true,
-        attributes: false,
-        characterData: false,
-        subtree: false
-    });
-})();
+new MutationObserver(tokenInputBoxSetting).observe(document, {
+    childList: true,
+    attributes: false,
+    characterData: false,
+    subtree: false
+});
 
 sendMessage(MessageType.REMOVE_OTHER_PAGE);

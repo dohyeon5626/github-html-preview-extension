@@ -37,7 +37,7 @@ export const getPreviewButtonErrorAlert = (): HTMLElement | null => {
     return document.getElementById("preview-button-error-alert");
 }
 
-export const createGithubOauthBox = (): HTMLElement | null => {
+export const createGithubOauthBox = (): HTMLElement => {
     return getTagByString(`
         <div id="github-oauth-box">
             <button id="github-oauth-button" class="logout">

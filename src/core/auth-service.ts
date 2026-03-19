@@ -2,14 +2,19 @@ import { getProxyToken } from "../shared/api";
 import { getData } from "../shared/chrome";
 import { StorageType } from "../shared/type";
 
+export const parseGithubUrl = (url: string): { user: string; repo: string } => {
+    const [user, repo] = url.replace("https://github.com/", "").split("/");
+    return { user, repo };
+}
+
 export const isOauthTokenEnable = async (): Promise<boolean> => {
     const data = await getData([StorageType.GITHUB_OAUTH_TOKEN]);
-    return data[StorageType.GITHUB_OAUTH_TOKEN];
+    return !!data[StorageType.GITHUB_OAUTH_TOKEN];
 }
 
 export const getHtmlPreviewPageUrl = async (url: string, user: string, repo: string): Promise<string> => {
     const data = await getData([StorageType.GITHUB_OAUTH_TOKEN, StorageType.INPUT_TOKEN]);
-    
+
     const tokenList = [];
     if (data[StorageType.GITHUB_OAUTH_TOKEN]) {
         tokenList.push(data[StorageType.GITHUB_OAUTH_TOKEN]);
