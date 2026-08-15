@@ -10,7 +10,7 @@ if (!htmlPreview) {
         if (btnGroup) {
             for (const aTag of btnGroup.querySelectorAll("div > a")) {
                 if (aTag.getAttribute("data-testid") === "raw-button") {
-                    appendTagBefore(btnGroup.firstElementChild!, createHtmlPreviewButtonBox(aTag.getAttribute("class")!));
+                    appendTagBefore(btnGroup.firstElementChild!, createHtmlPreviewButtonBox(aTag.parentElement?.getAttribute("class")!, aTag.getAttribute("class")!));
                 }
             }
 

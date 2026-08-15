@@ -54,8 +54,8 @@ export const createTokenButton = (): HTMLElement => {
     return getTagByString(`<button id="token-button">Enter</button>`);
 }
 
-export const createHtmlPreviewButtonBox = (styleClass: string): HTMLElement => {
-    return getTagByString(`<div><button id="html-preview" data-size="small" data-variant="default" class="${styleClass}">Preview</button></div>`);
+export const createHtmlPreviewButtonBox = (divStyleClass: string, buttonStyleClass: string): HTMLElement => {
+    return getTagByString(`<div class="${divStyleClass}"><button id="html-preview" data-size="small" data-variant="default" class="${buttonStyleClass}">Preview</button></div>`);
 }
 
 export const createPreviewButtonErrorAlert =(): HTMLElement => {
